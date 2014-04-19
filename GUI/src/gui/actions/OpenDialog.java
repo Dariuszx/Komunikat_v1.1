@@ -1,4 +1,4 @@
-package engine.actions;
+package gui.actions;
 
 import gui.KDialogs.KDialog;
 

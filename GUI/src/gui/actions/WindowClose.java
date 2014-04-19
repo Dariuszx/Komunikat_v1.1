@@ -1,8 +1,9 @@
-package engine.actions;
+package gui.actions;
 
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public abstract class WindowClose extends WindowAdapter {
 

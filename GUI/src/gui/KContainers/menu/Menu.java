@@ -4,10 +4,7 @@ import gui.KContainers.KWindow;
 import gui.KExceptions.MenuException;
 
 import javax.swing.*;
-import javax.swing.text.html.HTMLDocument;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class Menu {
 

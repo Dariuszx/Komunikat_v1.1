@@ -7,14 +7,14 @@ import gui.KExceptions.MenuException;
 
 import java.util.HashMap;
 
-public class createUI {
+public class createUI implements Runnable {
 
     KWindow window;
     HashMap<String,Menu> menu;
     Menu mainMenu;
 
-    public createUI() {
-
+    @Override
+    public void run() {
         menu = new HashMap<String, Menu>();
         window = new KWindow( "Komunikator" );
         addMainMenu();
@@ -22,10 +22,9 @@ public class createUI {
         window.setVisible( true );
     }
 
-
     public void addMainMenu() {
 
-        Menu mainMenu = new Menu();
+        mainMenu = new Menu();
 
         try {
             mainMenu.addKmenu("file", "File");
@@ -42,6 +41,5 @@ public class createUI {
             new ErrorDialog( window, e.toString() );
         }
     }
-
 
 }
