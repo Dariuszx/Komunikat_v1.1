@@ -12,6 +12,12 @@ public class KDialog extends JDialog {
         setSize( dim );
         setLocationRelativeTo( parent );
         setTitle( title );
+    }
+
+    public KDialog( JFrame parent, String title ) {
+
+        setLocationRelativeTo( parent );
+        setTitle( title );
 
     }
 }

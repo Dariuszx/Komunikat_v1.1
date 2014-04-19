@@ -31,14 +31,17 @@ public class createUI {
             mainMenu.addKmenu("file", "File");
                 mainMenu.addKMenuItem( "file", "new", "New" );
                 mainMenu.addKMenuItem( "file", "open", "Open" );
+                mainMenu.addKMenuItem( "file", "settings", "Settings" );
                 mainMenu.addKMenuItem( "file", "exit", "Exit" );
             mainMenu.addKmenu("view", "View");
             mainMenu.addKmenu("help", "Help");
 
             mainMenu.addToWindow( window );
+
         }catch ( MenuException e ) {
             new ErrorDialog( window, e.toString() );
         }
-
     }
+
+
 }
