@@ -10,24 +10,19 @@ public abstract class OpenDialog implements ActionListener {
 
     public JFrame parent;
     public KDialog dialog;
-    public String title;
+    public String title = "";
 
     public OpenDialog( JFrame parent, String title ) {
-
         this.parent = parent;
         this.title = title;
     }
 
-    public OpenDialog( JFrame parent ) {
-
-        this.parent = parent;
+    public void setProperties() {
+        dialog = new KDialog( parent, title );
     }
 
-    public abstract void handleDialog();
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        handleDialog();
-        dialog.setVisible( true );
-    }
+    public abstract void actionPerformed( ActionEvent e );
+
 }
