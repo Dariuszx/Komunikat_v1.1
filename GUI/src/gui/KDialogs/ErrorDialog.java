@@ -1,12 +1,13 @@
 package gui.KDialogs;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ErrorDialog {
 
-    JFrame window;
+    Component window;
 
-    public ErrorDialog( JFrame parent, String message ) {
+    public ErrorDialog( Component parent, String message ) {
 
         this.window = parent;
         Object[] options = { "Ok" };
