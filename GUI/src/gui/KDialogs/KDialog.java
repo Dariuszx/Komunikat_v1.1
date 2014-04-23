@@ -6,6 +6,8 @@ import java.awt.*;
 
 public class KDialog extends JDialog {
 
+    public StatusPanel statusPanel;
+
     public KDialog( JFrame parent, Dimension dim, String title ) {
 
         dim.height += 20;

@@ -41,7 +41,7 @@ class ServiceRequest implements Runnable {
     @Override
     public void run() {
 
-        System.out.println( "Client accepted: " + gniazdo );
+        System.out.println( "Client accepted: " + gniazdo.getRemoteSocketAddress() );
 
         try {
             streamIn = new DataInputStream( new BufferedInputStream( gniazdo.getInputStream() ) );
@@ -53,6 +53,7 @@ class ServiceRequest implements Runnable {
 
         while( true ) {
             try {
+
                 String line = streamIn.readUTF();
                 System.out.println( line + " from " + gniazdo.getRemoteSocketAddress() );
 

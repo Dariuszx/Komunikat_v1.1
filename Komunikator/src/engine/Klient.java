@@ -1,6 +1,9 @@
 package engine;
 
 
+import gui.KDialogs.WarningDialog;
+
+import java.awt.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,23 +13,22 @@ import java.net.UnknownHostException;
 
 public class Klient {
 
-    private Socket gniazdo = null;
+    public Socket gniazdo = null;
     private DataInputStream console = null;
     private DataOutputStream streamOut = null;
     private DataInputStream streamIn = null;
 
-    private String Host;
-    private int Port;
-    private boolean isconnected = false;
+    public String host;
+    public int port;
+    private boolean connected = false;
 
-    public Klient(String Host, int Port) throws IOException {
+    public Klient() {}
 
-        this.Host = Host;
-        this.Port = Port;
+    public Klient( String Host, int Port ) {
 
-        gniazdo = new Socket( Host, Port );
-        System.out.println( "Connected: " + gniazdo );
-        isconnected = true;
+        this.host = Host;
+        this.port = Port;
+
 /*
         start();
 
@@ -49,9 +51,26 @@ public class Klient {
         */
     }
 
-    public boolean isConnected() {
-        return isconnected;
+    public void sendString( String s ) throws IOException {
+
+        if ( isConnected() == true ) {
+            streamOut.writeUTF(s);
+            streamOut.flush();
+        }
     }
+
+
+    public void connect() throws IOException {
+
+        gniazdo = new Socket( host, port );
+        start();
+        connected = true;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
     private void start() throws IOException {
 
         console = new DataInputStream( System.in );
@@ -59,4 +78,19 @@ public class Klient {
         streamIn = new DataInputStream( new BufferedInputStream( gniazdo.getInputStream() ) );
 
     }
+}
+
+abstract class MakeRequest implements Runnable {
+
+    private Klient klient;
+    private Object data;
+
+    public MakeRequest( Klient klient, Object data ) {
+
+        this.klient = klient;
+        this.data = data;
+    }
+
+    @Override
+    abstract public void run();
 }

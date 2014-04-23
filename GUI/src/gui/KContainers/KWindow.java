@@ -1,16 +1,15 @@
 package gui.KContainers;
 
-import gui.KDialogs.ExitDialog;
-import gui.actions.WindowClose;
+import gui.KDialogs.StatusPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 
 public class KWindow extends JFrame {
 
     private int width;
     private int height;
+    public StatusPanel statusPanel;
 
     private String title;
 
@@ -26,17 +25,20 @@ public class KWindow extends JFrame {
 
         this.width = res.width / 2;
         this.height = res.height / 2;
+        statusPanel = new StatusPanel( this );
 
         setSize( width, height );
         setTitle( title );
         setLocation( width / 2, height / 2 );
         setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
 
+/*
         addWindowListener( new WindowClose( this ) {
             @Override
             public void windowClosing( WindowEvent ev ) {
                 new ExitDialog( this.parent );
             }
         });
+        */
     }
 }

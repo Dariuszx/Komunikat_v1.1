@@ -1,5 +1,6 @@
 package gui.actions;
 
+import gui.KContainers.KWindow;
 import gui.KDialogs.KDialog;
 
 import javax.swing.*;
@@ -8,11 +9,11 @@ import java.awt.event.ActionListener;
 
 public abstract class OpenDialog implements ActionListener {
 
-    public JFrame parent;
+    public KWindow parent;
     public KDialog dialog;
     public String title = "";
 
-    public OpenDialog( JFrame parent, String title ) {
+    public OpenDialog( KWindow parent, String title ) {
         this.parent = parent;
         this.title = title;
     }
