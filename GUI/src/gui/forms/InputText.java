@@ -1,5 +1,6 @@
 package gui.forms;
 
+import gui.KContainers.KPanel;
 import gui.KDialogs.ErrorDialog;
 import gui.KDialogs.KDialog;
 
@@ -10,8 +11,13 @@ import java.util.HashMap;
 
 public abstract class InputText implements ActionListener {
 
-    public JPanel panel;
+    public KPanel panel;
     private JButton submit;
+
+    private int inputWidth;
+    private int inputHeight;
+    private int padding;
+    private int labelWidth;
 
     protected KDialog dialog;
 
@@ -23,11 +29,12 @@ public abstract class InputText implements ActionListener {
         this.input = new HashMap<String, JTextField>();
         this.submit = new JButton( "Submit" );
 
-        this.panel = new JPanel( );
+        this.panel = new KPanel();
 
-        GroupLayout layout = new GroupLayout( panel );
-        layout.setAutoCreateGaps( true );
-        layout.setAutoCreateContainerGaps( true );
+        inputWidth = 100;
+        inputHeight = 17;
+        padding = 5;
+        labelWidth = 80;
 
         submit.addActionListener( this );
     }
@@ -52,11 +59,11 @@ public abstract class InputText implements ActionListener {
             else {
                 JLabel label = new JLabel( title );
                 JTextField inputArea = new JTextField( lenght );
-                label.setLabelFor( inputArea );
 
                 input.put( key, inputArea );
-                panel.add( label );
-                panel.add( inputArea );
+
+                panel.addObject( label, padding * 2, padding * 2 + ( input.size() - 1 ) * ( padding + inputHeight ), new Dimension( labelWidth, inputHeight) );
+                panel.addObject( inputArea, padding * 2 + labelWidth + padding, padding * 2 + ( input.size() - 1 ) * ( padding + inputHeight ), new Dimension( inputWidth, inputHeight) );
             }
         } catch( Exception e ) {
             new ErrorDialog( dialog, e.toString() );
@@ -65,8 +72,29 @@ public abstract class InputText implements ActionListener {
 
     public void setVisible( boolean b ) {
         if( b == true ) {
-            panel.add( submit );
+            panel.addObject( submit,
+                    (   padding * 2 + labelWidth + padding + inputWidth + padding ) / 2, // x
+                        padding * 2 + input.size() * ( padding + inputHeight ) + padding, // y
+                        submit.getPreferredSize()
+                    );
+
             dialog.add( panel );
         }
+    }
+
+    public Dimension getSize() {
+
+        return new Dimension(
+                padding * 6 + labelWidth + padding + inputWidth, //x
+                padding * 2 + input.size() * ( padding + inputHeight ) + padding + submit.getPreferredSize().height //y
+        );
+    }
+
+    public int getX() {
+        return padding * 6 + labelWidth + padding + inputWidth;
+    }
+
+    public int getY() {
+        return padding * 6 + input.size() * ( padding + inputHeight ) + padding + submit.getPreferredSize().height;
     }
 }

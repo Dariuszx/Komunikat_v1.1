@@ -10,6 +10,7 @@ import gui.actions.OpenDialog;
 import gui.forms.InputText;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -30,16 +31,15 @@ public class SetUpConnection extends OpenDialog {
         setProperties(); //Ustawiam parametry okna dialogowego
         dialog.setModal( true );
         dialog.statusPanel = new StatusPanel( dialog );
-        //dialog.setResizable( false );
 
         ConnectionForm form = new ConnectionForm( parent,  dialog, data );
-
 
         form.addInputArea( "IP", "ip", 10 );
         form.addInputArea( "Port", "port", 10 );
         form.addInputArea( "Nickname", "nickname", 10 );
         form.addInputArea( "ID", "id", 10 );
 
+        dialog.setSize( form.getX(), form.getY() + 35 );
 
         form.setVisible( true );
 
@@ -50,8 +50,6 @@ public class SetUpConnection extends OpenDialog {
         } else {
             dialog.statusPanel.setText( "Not connected." );
         }
-
-        dialog.setSize( 300, 125 );
 
         dialog.setLocationRelativeTo( parent );
         dialog.setVisible( true );
