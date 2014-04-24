@@ -2,41 +2,49 @@ package gui.forms;
 
 import gui.KContainers.KPanel;
 import gui.KDialogs.ErrorDialog;
-import gui.KDialogs.KDialog;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class InputText implements ActionListener {
-
-    public KPanel panel;
-    private JButton submit;
+public abstract class InputText extends KPanel {
 
     private int inputWidth;
     private int inputHeight;
     private int padding;
     private int labelWidth;
 
-    protected KDialog dialog;
-
     public HashMap<String, JTextField> input;
+    public ArrayList<JButton> buttons;
 
-    public InputText( KDialog dialog ) {
+    private int yAvailable;
 
-        this.dialog = dialog;
+    public InputText( Dimension input, int padding, int labelWidth ) {
+
         this.input = new HashMap<String, JTextField>();
-        this.submit = new JButton( "Submit" );
+        this.buttons = new ArrayList<JButton>();
 
-        this.panel = new KPanel();
+        this.inputWidth = input.width;
+        this.inputHeight = input.height;
+        this.padding = padding;
+        this.labelWidth = labelWidth;
 
-        inputWidth = 100;
-        inputHeight = 17;
-        padding = 5;
-        labelWidth = 80;
+        yAvailable = padding * 2;
+    }
 
-        submit.addActionListener( this );
+    public void addButton( JButton button ) {
+
+        int i, x=0;
+
+        buttons.add( button );
+
+        for( i=0; i < buttons.size(); i++ ) {
+            x += buttons.get( i ).getPreferredSize().width + padding;
+        }
+
+        addObject(button, labelWidth + padding + inputWidth - x, yAvailable, button.getPreferredSize());
+        if( buttons.size() == 0 ) yAvailable += 2 * padding + button.getPreferredSize().height;
     }
 
     public JTextField getInputArea( String key ) {
@@ -47,7 +55,7 @@ public abstract class InputText implements ActionListener {
                 return input.get( key );
             }
         } catch( Exception e ) {
-                new ErrorDialog( dialog, e.toString() );
+                new ErrorDialog( null, e.toString() );
         }
         return null;
     }
@@ -62,23 +70,14 @@ public abstract class InputText implements ActionListener {
 
                 input.put( key, inputArea );
 
-                panel.addObject( label, padding * 2, padding * 2 + ( input.size() - 1 ) * ( padding + inputHeight ), new Dimension( labelWidth, inputHeight) );
-                panel.addObject( inputArea, padding * 2 + labelWidth + padding, padding * 2 + ( input.size() - 1 ) * ( padding + inputHeight ), new Dimension( inputWidth, inputHeight) );
+                addObject( label, padding * 2, yAvailable, new Dimension( labelWidth, inputHeight ) );
+                addObject( inputArea, padding * 2 + labelWidth + padding, yAvailable, new Dimension( inputWidth, inputHeight ) );
+
+                yAvailable += padding + inputHeight;
             }
+
         } catch( Exception e ) {
-            new ErrorDialog( dialog, e.toString() );
-        }
-    }
-
-    public void setVisible( boolean b ) {
-        if( b == true ) {
-            panel.addObject( submit,
-                    (   padding * 2 + labelWidth + padding + inputWidth + padding ) / 2, // x
-                        padding * 2 + input.size() * ( padding + inputHeight ) + padding, // y
-                        submit.getPreferredSize()
-                    );
-
-            dialog.add( panel );
+            new ErrorDialog( null, e.toString() );
         }
     }
 
@@ -86,15 +85,8 @@ public abstract class InputText implements ActionListener {
 
         return new Dimension(
                 padding * 6 + labelWidth + padding + inputWidth, //x
-                padding * 2 + input.size() * ( padding + inputHeight ) + padding + submit.getPreferredSize().height //y
+                yAvailable + 100 //y
         );
     }
 
-    public int getX() {
-        return padding * 6 + labelWidth + padding + inputWidth;
-    }
-
-    public int getY() {
-        return padding * 6 + input.size() * ( padding + inputHeight ) + padding + submit.getPreferredSize().height;
-    }
 }

@@ -19,6 +19,7 @@ public class KDialog extends JDialog {
 
         setTitle( title );
         setDefaultCloseOperation( DISPOSE_ON_CLOSE );
+        //setLayout( new BoxLayout( this, BoxLayout.X_AXIS ) );
 
     }
 }

@@ -2,6 +2,8 @@ package composition.menu;
 
 import engine.Data;
 import engine.Klient;
+import events.ConnectionSubmit;
+import gui.KContainers.KContainer;
 import gui.KContainers.KWindow;
 import gui.KDialogs.KDialog;
 import gui.KDialogs.StatusPanel;
@@ -28,20 +30,20 @@ public class SetUpConnection extends OpenDialog {
 
     @Override
     public void actionPerformed( ActionEvent e ) {
-        setProperties(); //Ustawiam parametry okna dialogowego
+
+        setProperties();
         dialog.setModal( true );
         dialog.statusPanel = new StatusPanel( dialog );
+        dialog.setResizable( false );
 
-        ConnectionForm form = new ConnectionForm( parent,  dialog, data );
+        KContainer container = new KContainer();
 
-        form.addInputArea( "IP", "ip", 10 );
-        form.addInputArea( "Port", "port", 10 );
-        form.addInputArea( "Nickname", "nickname", 10 );
-        form.addInputArea( "ID", "id", 10 );
+            ConnectionForm form = new ConnectionForm( dialog, data );
 
-        dialog.setSize( form.getX(), form.getY() + 35 );
+        container.add( form );
 
-        form.setVisible( true );
+        dialog.add( container );
+        dialog.setSize( form.getSize() );
 
         if( data.serwer.isConnected() ) {
             form.getInputArea( "ip" ).setText( data.serwer.host );
@@ -56,28 +58,4 @@ public class SetUpConnection extends OpenDialog {
     }
 }
 
-class ConnectionForm extends InputText {
 
-    private Data data;
-    private KWindow window;
-
-    public ConnectionForm( KWindow window, KDialog dialog, Data d ) {
-
-        super( dialog );
-        this.data = d;
-        this.window = window;
-    }
-
-    @Override
-    public void actionPerformed( ActionEvent e ) {
-
-        try {
-            data.connectToServer( dialog, input.get("ip").getText(), Integer.parseInt(input.get("port").getText()) );
-
-        } catch ( NumberFormatException d ) {
-            new WarningDialog( dialog, "Number Format Exception" );
-        } catch ( Exception ex ) {
-            new WarningDialog( dialog, ex.toString() );
-        }
-    }
-}
